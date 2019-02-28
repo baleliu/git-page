@@ -12,7 +12,8 @@
     "webpack-server-dev": "webpack-dev-server --mode development --open --config ./webpack/webpack.dev.js",
     "start": "yarn run webpack-server-dev",
     "build": "yarn run webpack --config ./webpack/webpack.dev.js",
-    "push": "yarn run build && cp -ri ./dist ./repository && git add --all && git commit -m 'cmd push' && git push"
+    "pull": "rm -rf ./repository && git clone https://github.com/baleliu/baleliu.github.io.git repository",
+    "push": "yarn run build && cd repository && git pull && cp -rf ../dist/* . && git add --all && git commit -m 'cmd push' && git push"
   },
   "eslintConfig": {
     "extends": "react-app"
