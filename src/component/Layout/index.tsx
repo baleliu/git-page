@@ -3,17 +3,13 @@ import React from 'react';
 import {
     Layout, Menu, Breadcrumb, Icon,
 } from 'antd';
-import MdPage from "../MdPage";
-
-
-const input = require('../../static/t.md');
-
+import {Link} from 'react-router-dom';
 
 const {
     Header, Content, Footer, Sider,
 } = Layout;
 
-const SubMenu = Menu.SubMenu;
+// const SubMenu = Menu.SubMenu;
 
 class SiderDemo extends React.Component {
     state = {
@@ -36,14 +32,18 @@ class SiderDemo extends React.Component {
                     <div className="logo"/>
                     <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
                         <Menu.Item key="1">
-                            <Icon type="pie-chart"/>
-                            <span>Option 1</span>
+                            <Link to="/page1">
+                                <Icon type="pie-chart"/>
+                                <span>page 1</span>
+                            </Link>
                         </Menu.Item>
                         <Menu.Item key="2">
-                            <Icon type="desktop"/>
-                            <span>Option 2</span>
+                            <Link to={"/page2"}>
+                                <Icon type="desktop"/>
+                                <span>page 2</span>
+                            </Link>
                         </Menu.Item>
-                        <SubMenu
+                        {/*<SubMenu
                             key="sub1"
                             title={<span><Icon type="user"/><span>User</span></span>}
                         >
@@ -61,7 +61,7 @@ class SiderDemo extends React.Component {
                         <Menu.Item key="9">
                             <Icon type="file"/>
                             <span>File</span>
-                        </Menu.Item>
+                        </Menu.Item>*/}
                     </Menu>
                 </Sider>
                 <Layout>
@@ -72,11 +72,11 @@ class SiderDemo extends React.Component {
                             <Breadcrumb.Item>Bill</Breadcrumb.Item>
                         </Breadcrumb>
                         <div style={{padding: 24, background: '#fff', minHeight: 360}}>
-                            <MdPage src={input}/>
+                            {this.props.children}
                         </div>
                     </Content>
                     <Footer style={{textAlign: 'center'}}>
-                        Ant Design ©2018 Created by Ant UED
+                        DOC ©2019 Created by Bale.liu
                     </Footer>
                 </Layout>
             </Layout>

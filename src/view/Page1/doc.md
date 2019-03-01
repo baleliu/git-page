@@ -45,7 +45,7 @@ yum -y install docker-ce
 // 查看
 docker version
 ```
-![23777d78db86e54c89c730301b095bda.png](evernotecid://C0395E0D-46AA-405B-AA0B-91B088AE051C/appyinxiangcom/19256479/ENResource/p92)
+![23777d78db86e54c89c730301b095bda.png](static/img1.jpg)
 
 > `ok` docker 准备好了
 

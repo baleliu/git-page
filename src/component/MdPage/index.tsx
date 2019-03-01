@@ -20,6 +20,8 @@ class MdPage extends React.Component<Props> {
         }).then(d => {
             console.log(d)
         });*/
+
+        // @ts-ignore
     }
 
     render(): React.ReactNode {
