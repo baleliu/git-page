@@ -78,7 +78,6 @@ $ kubeadm init
 // 解决：
 // 虚拟机修改配置
 ```
-![fe193e6ab82de87060c69001e46485f5.png](evernotecid://C0395E0D-46AA-405B-AA0B-91B088AE051C/appyinxiangcom/19256479/ENResource/p98)
 
 ```
 [ERROR FileContent--proc-sys-net-bridge-bridge-nf-call-iptables]: /proc/sys/net/bridge/bridge-nf-call-iptables contents are not set to 1
@@ -254,8 +253,6 @@ $ firewall-cmd --zone=public --add-port=30001/tcp --permanent && firewall-cmd --
 ### 查看战果
 
 浏览器中查看结果 `http://${ip地址}:30001/`
-
-![d99f6f8e9d6886189989e6f292d9467e.png](evernotecid://C0395E0D-46AA-405B-AA0B-91B088AE051C/appyinxiangcom/19256479/ENResource/p97)
 
 ### 总结
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import RouteIndex from './component/RouteIndex';
+import RoutePage from "./view/RoutePage";
 
 
 ReactDOM.render(
-    <RouteIndex/>
+    <RoutePage/>
     ,
     document.getElementById('root')
 );

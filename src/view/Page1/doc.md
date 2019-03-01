@@ -116,8 +116,6 @@ docker ps -a
 // 偷懒可以 chown -R 777 文件夹/
 ```
 
-![76987d550eac2dd9734b701dea28bb70.png](evernotecid://C0395E0D-46AA-405B-AA0B-91B088AE051C/appyinxiangcom/19256479/ENResource/p93)
-
 不废话，容器运行起来！：
 ```
 // 运行tomcat容器
@@ -132,8 +130,6 @@ docker run -itd -h 8080:8080 --volumes-from conf-dev --name tomcat-uat tomcat:9.
 // 瞄一眼容器启动情况（没错很稳！）
 docker ps
 ```
-![4016c3ed97e9fed32d14e3efb7e8d93e.png](evernotecid://C0395E0D-46AA-405B-AA0B-91B088AE051C/appyinxiangcom/19256479/ENResource/p94)
-
 > 到这里docker容器准备已经完成，就等着jenkins使用呢！
 
 
@@ -150,8 +146,6 @@ usermod -a docker jenkins
 ```
 
 > 不管三七二十我们先把jenkins创建一个（假装是一个，其他的都是以后复制的）
-![163405319d0a5ffcf6e513931ac31aa3.png](evernotecid://C0395E0D-46AA-405B-AA0B-91B088AE051C/appyinxiangcom/19256479/ENResource/p95)
-
 > 配置jenkins
 > 这里需要注意`name=`后面需要写正则表达式，如果不加`^`那么会把我的`配置容器tomcat-env-conf`一起启动起来，虽然没影响，但是浪费资源，而且，如果不小心把其他测试容器弄起来，很吓人的。
 ```
@@ -169,8 +163,6 @@ docker restart `docker ps -aq   --filter name="^tomcat-$ENV\$"`
 ```
 
 > ok 完成配置，启动一下喵一眼，并且把其他环境配置起来，复制工程即可
-
-![c427c37f2ef94d2286acd12fbabf549d.png](evernotecid://C0395E0D-46AA-405B-AA0B-91B088AE051C/appyinxiangcom/19256479/ENResource/p96)
 
 ### 前端改造
 

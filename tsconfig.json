@@ -1,26 +1,29 @@
 {
   "compilerOptions": {
     "target": "es6",
+    "rootDir": "src",
     "lib": [
-      "dom"
+      "dom", "es6"
     ],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": false,
     // "noEmit": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "noImplicitAny": false,
+    "noUnusedLocals": true
   },
   "include": [
     "src"
   ],
   "exclude": [
-    "./node_modules"
+    "node_modules"
   ]
 }
