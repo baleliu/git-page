@@ -14,7 +14,7 @@
   "scripts": {
     "__clone": "git clone https://github.com/baleliu/baleliu.github.io.git repository",
     "__mkdir": "mkdir new_repository && mkdir new_repository/\\.git/ && cp -rf repository/\\.git/ new_repository/\\.git/ && rm -rf repository && mv new_repository/ repository/ ",
-    "__push": "git push",
+    "__push": "cd repository && git push",
     "__commit": "cd repository && git pull && cp -rf ../dist/* . && git add --all && git commit -m 'cmd push'",
     "__serve": "webpack-dev-server --mode development --open --config ./webpack/serve.dev.js",
     "start": "yarn run __serve",

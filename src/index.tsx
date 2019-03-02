@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import RoutePage from "./view/RoutePage";
-
+import HomePage from "./view/HomePage";
 
 ReactDOM.render(
-    <RoutePage/>
+    <HomePage/>
     ,
     document.getElementById('root')
 );

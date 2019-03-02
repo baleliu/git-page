@@ -9,10 +9,10 @@ const lazyLoadComponent = (comp) => (props) => (
     <LazyBundle load={comp}>
         {(Container) => <Container {...props}/>}
     </LazyBundle>
-)
-
+);
 
 export default class RoutePage extends React.Component {
+
 
 
     render() {
