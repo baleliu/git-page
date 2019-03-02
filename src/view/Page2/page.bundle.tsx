@@ -1,8 +1,7 @@
 import React from 'react';
 
 import MdPage from '../../component/MdPage';
-
-const doc = require('./doc.md');
+import doc from './doc.md';
 
 export default class Page1 extends React.Component {
     render() {

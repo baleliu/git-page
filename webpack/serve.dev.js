@@ -2,6 +2,9 @@ const merge = require('webpack-merge');
 const common = require('../webpack.common.js');
 const webpack = require('webpack');
 
+// 开发模式
+const mode= 'development';
+
 module.exports = merge(common, {
     devServer: {
         inline: true,

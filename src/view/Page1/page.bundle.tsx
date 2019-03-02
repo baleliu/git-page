@@ -1,13 +1,33 @@
 import React from 'react';
-
 import MdPage from '../../component/MdPage';
-const doc = require('./doc.md');
+import doc from './doc.md';
 
-export default class Page1 extends React.Component {
+type State = {
+    markdown: string,
+}
+
+export default class Page1 extends React.Component<object, State> {
+
+    readonly state: State = {
+        markdown: "",
+    };
+
+    componentWillMount() {
+        fetch(doc)
+            .then(response => {
+                return response.text()
+            })
+            .then(text => {
+                this.setState({
+                    markdown: text,
+                });
+            })
+    }
+
     render() {
         return (
             <div>
-                <MdPage src={doc}/>
+                <MdPage src={this.state.markdown}/>
             </div>
         );
     }

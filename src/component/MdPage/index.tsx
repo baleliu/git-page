@@ -2,7 +2,7 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 
 type Props = {
-    src?: string
+    src?: any
 }
 
 class MdPage extends React.Component<Props> {
