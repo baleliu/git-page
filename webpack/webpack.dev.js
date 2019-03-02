@@ -1,11 +1,11 @@
 const merge = require('webpack-merge');
-const common = require('../webpack.common.js');
+const build = require('../webpack.build.js');
 const webpack = require('webpack');
 
 // 开发模式
 const mode= 'development';
 
-module.exports = merge(common, {
+module.exports = merge(build, {
     mode: mode,
     devtool: 'inline-source-map',
     plugins: [

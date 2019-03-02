@@ -18,8 +18,8 @@
     "__commit": "cd repository && git pull && cp -rf ../dist/* . && git add --all && git commit -m 'cmd push'",
     "__serve": "webpack-dev-server --mode development --open --config ./webpack/serve.dev.js",
     "start": "yarn run __serve",
-    "build": "yarn run webpack --config ./webpack/build.dev.js",
-    "build-prod": "yarn run webpack --config ./webpack/build.prod.js",
+    "build": "yarn run webpack --config ./webpack/webpack.dev.js",
+    "build-prod": "yarn run webpack --config ./webpack/webpack.prod.js",
     "pull": "rm -rf ./repository && yarn run __clone",
     "push": "yarn run build-prod && yarn run __mkdir && yarn run __commit && yarn run __push"
   },

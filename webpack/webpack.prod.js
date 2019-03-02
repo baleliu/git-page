@@ -1,5 +1,5 @@
 const merge = require('webpack-merge');
-const common = require('../webpack.common.js');
+const build = require('../webpack.build.js');
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
@@ -7,11 +7,10 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 // 生产模式
 const mode= 'production';
 
-module.exports = merge(common, {
+module.exports = merge(build, {
     mode: mode,
     // devtool: 'source-map',
     plugins: [
-        new CleanWebpackPlugin(['dist']),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(mode)
         }),
