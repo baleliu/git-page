@@ -24,7 +24,7 @@ export default class HomePage extends React.Component<object, State> {
                         :
                         <div>
                             <Row>
-                                <Col span={8} offset={8}>
+                                <Col  sm={{span: 24}} lg={{ span: 8, offset: 8 }}>
                                     <Card hoverable={true} title="测试首页 " bordered={true} style={{top: 200}}
                                           actions={[
                                               <Button onClick={(e) => {

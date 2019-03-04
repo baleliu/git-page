@@ -1,6 +1,7 @@
 import React from 'react';
 import MdPage from '../../component/MdPage';
 import doc from './doc.md';
+import nprogress from 'nprogress';
 
 type State = {
     markdown: string,
@@ -12,7 +13,8 @@ export default class Page1 extends React.Component<object, State> {
         markdown: "",
     };
 
-    componentWillMount() {
+    componentWillMount(): void {
+        nprogress.start();
         fetch(doc)
             .then(response => {
                 return response.text()
@@ -21,6 +23,7 @@ export default class Page1 extends React.Component<object, State> {
                 this.setState({
                     markdown: text,
                 });
+                nprogress.done();
             })
     }
 
