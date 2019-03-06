@@ -1,14 +1,34 @@
 const merge = require('webpack-merge');
 const common = require('../webpack.common.js');
 const webpack = require('webpack');
+const constant = require('./webpack.constant').constant;
 
 // 开发模式
-const mode= 'development';
+const mode = 'development';
 
 module.exports = merge(common, {
+    module: {
+        rules: [
+            {
+                test: /\.less$/,
+                exclude: constant.NODE_MODULES,
+                use: [
+                    {
+                        loader: "style-loader"
+                    }, {
+                        loader: 'css-loader',
+                        options: {
+                            modules: true,
+                        }
+                    }, {
+                        loader: "less-loader"
+                    }],
+            },
+        ]
+    },
     devServer: {
         inline: true,
-        port: 8000,
+        port: 3000,
         contentBase: './dist',
         hot: true
     },

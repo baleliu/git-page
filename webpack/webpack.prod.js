@@ -2,15 +2,36 @@ const merge = require('webpack-merge');
 const build = require('../webpack.build.js');
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const constant = require('./webpack.constant').constant;
 
 // 生产模式
 const mode= 'production';
 
 module.exports = merge(build, {
     mode: mode,
-    // devtool: 'source-map',
+    module: {
+        rules: [
+            {
+                test: /\.less$/,
+                exclude: constant.NODE_MODULES,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [{
+                        loader: 'css-loader',
+                        options: {
+                            modules: true,
+                        }
+                    }, {
+                        loader: "less-loader"
+                    }],
+                })
+            },
+        ]
+    },
     plugins: [
+        // 独立打包 css（less）文件
+        new ExtractTextPlugin({filename: '[name].css', allChunks: true}),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(mode)
         }),

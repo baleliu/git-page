@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
     "target": "es6",
     "rootDir": "src",
     "lib": [
@@ -18,7 +19,8 @@
     // "noEmit": true,
     "jsx": "preserve",
     "noImplicitAny": false,
-    "noUnusedLocals": true
+    // 未使用文件
+    "noUnusedLocals": false
   },
   "include": [
     "src"

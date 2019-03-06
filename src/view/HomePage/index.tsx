@@ -1,38 +1,50 @@
-import React from "react";
+import React, {lazy, Suspense} from "react";
 import {Button, Card, Row, Col, Avatar} from 'antd';
-import RoutePage from '../RoutePage';
+import {connect} from 'react-redux';
+import {action} from '../../redux/global'
 
 const {Meta} = Card;
+
+const RoutePage = lazy(() => import('../RoutePage'))
 
 type State = {
     isHome: boolean
 }
 
-export default class HomePage extends React.Component<object, State> {
+type Props = {
+    isLogin: string
+    login: any,
+}
 
-    readonly state: State = {
-        isHome: false
-    };
-
+@connect(
+    (state) => {
+        return {
+            isLogin: state.global.isLogin
+        }
+    },
+    (dispatch) => {
+        return {
+            login: () => dispatch(action.login)
+        }
+    }
+)
+export default class HomePage extends React.Component<any> {
     render() {
+        const {isLogin, login} = this.props;
         return (
             <div>
-
                 {
-                    this.state.isHome ?
-                        <RoutePage/>
+                    isLogin ?
+                        <Suspense fallback={<h1>Still Loading…</h1>}>
+                            <RoutePage/>
+                        </Suspense>
                         :
                         <div>
                             <Row>
-                                <Col  sm={{span: 24}} lg={{ span: 8, offset: 8 }}>
+                                <Col sm={{span: 24}} lg={{span: 8, offset: 8}}>
                                     <Card hoverable={true} title="测试首页 " bordered={true} style={{top: 200}}
                                           actions={[
-                                              <Button onClick={(e) => {
-                                                  this.setState({
-                                                      isHome: true
-                                                  });
-                                                  console.log(this.state.isHome)
-                                              }}>进入文档页面</Button>
+                                              <Button onClick={login}>进入文档页面</Button>
                                           ]}
                                     >
                                         <Meta

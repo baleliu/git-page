@@ -2,8 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const HelloWorldPlugin = require('./webpack/plugin/HelloWorldPlugin')
+const HelloWorldPlugin = require('./webpack/plugin/HelloWorldPlugin');
+const constant = require('./webpack/webpack.constant').constant;
 
 module.exports = {
     // 入口文件
@@ -25,7 +25,7 @@ module.exports = {
             {
                 test: /\.bundle\.tsx$/, // 通过文件名后缀自动处理需要转成bundle的文件
                 include: /src/,
-                exclude: /node_modules|bower_components/,
+                exclude: constant.NODE_MODULES,
                 use: [{
                     loader: 'bundle-loader',
                     options: {
@@ -41,7 +41,7 @@ module.exports = {
                 exclude: /node_modules|bower_components/
             },
             {
-                test: /\.md$/,
+                test: /\.(md|json)$/,
                 exclude: /(node_modules|bower_components)/,
                 use: {
                     loader: 'file-loader',
@@ -56,25 +56,6 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                 }
-            },
-            /*{
-                test: /\.css$/,
-                exclude: /(node_modules|bower_components)/,
-                use: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader', publicPath: '/'})
-            },*/
-            {
-                test: /\.css$/,
-                exclude: /(node_modules|bower_components)/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: {
-                        loader: 'css-loader',
-                        options: {
-                            modules: true,
-                        }
-                    },
-                    publicPath: '/'
-                })
             },
             {
                 test: /\.css$/,
@@ -118,7 +99,6 @@ module.exports = {
             {from: 'CNAME'},
             {from: 'static/**/*', to: 'static/'}
         ]),
-        new ExtractTextPlugin({filename: '[name].css', allChunks: true}),
         new HelloWorldPlugin("liu wen tao")
     ],
 
