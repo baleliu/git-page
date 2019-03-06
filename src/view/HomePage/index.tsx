@@ -25,15 +25,12 @@ type Props = {
     (dispatch) => {
         return {
             login: () => dispatch(action.login),
-            init: () => dispatch(action.init)
+            //init: () => dispatch(action.init)
         }
     }
 )
 export default class HomePage extends React.Component<any> {
     componentWillMount(): void {
-        // 初始化session
-        const {init} = this.props;
-        init();
     }
 
     render() {

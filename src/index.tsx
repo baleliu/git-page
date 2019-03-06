@@ -6,7 +6,6 @@ import HomePage from "./view/HomePage";
 import {Provider} from 'react-redux'
 import {store} from './redux/store';
 
-
 ReactDOM.render(
     <Provider store={store}>
         <HomePage/>

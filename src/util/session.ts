@@ -7,12 +7,10 @@ export const init = () => {
 };
 
 export const login = () => {
-    window.sessionStorage.removeItem('login');
     window.sessionStorage.setItem('login', YES);
 };
 
 export const logout = () => {
-    window.sessionStorage.removeItem('login');
     window.sessionStorage.setItem('login', NO);
 };
 
