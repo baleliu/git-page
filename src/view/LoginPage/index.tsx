@@ -21,7 +21,7 @@ const {Meta} = Card;
         }
     }
 )
-export default class HomePage extends React.Component<any> {
+export default class LoginPage extends React.Component<any> {
     componentWillMount(): void {
     }
 

@@ -3,6 +3,7 @@ import MdPage from '../../component/MdPage';
 import doc from './doc.md';
 import nprogress from 'nprogress';
 
+
 type State = {
     markdown: string,
 }
@@ -30,7 +31,8 @@ export default class Page1 extends React.Component<object, State> {
     render() {
         return (
             <div>
-                <MdPage src={this.state.markdown}/>
+                <MdPage src={this.state.markdown}
+                />
             </div>
         );
     }

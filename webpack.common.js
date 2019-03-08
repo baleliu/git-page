@@ -10,17 +10,14 @@ module.exports = {
     // 入口文件
     entry: {
         app: './src/index.tsx',
-        /*antd:[
-            'antd'
-        ]*/
     },
     // 输出到dist文件夹, 文件名字为bundle.js
     output: {
         filename: '[name].bundle.js',
         path: path.join(__dirname, 'dist'),
-        chunkFilename: '[chunkhash:5].[name].js',
+        publicPath: '/',
+        chunkFilename: 'js/[chunkhash:5].[name].js',
     },
-    mode: 'production', //可选值有：production development
     module: {
         rules: [
             {
@@ -30,7 +27,6 @@ module.exports = {
                 use: [{
                     loader: 'bundle-loader',
                     options: {
-                        // name: '[name]',
                         lazy: true
                     }
                 },]
@@ -48,12 +44,12 @@ module.exports = {
                 exclude: constant.NODE_MODULES
             },
             {
-                test: /\.(md|json)$/,
+                test: /\.(md)$/,
                 exclude: constant.NODE_MODULES,
                 use: {
                     loader: 'file-loader',
                     options: {
-                        name: '[name]',
+                        name: 'md/[hash].[ext]',
                     }
                 }
             },
@@ -113,7 +109,7 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
         new CopyWebpackPlugin([
             {from: 'CNAME'},
-            {from: 'static/**/*', to: 'static/'}
+            // {from: 'public/404.html'}
         ]),
         new HelloWorldPlugin("liu wen tao")
     ],

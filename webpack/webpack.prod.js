@@ -31,7 +31,7 @@ module.exports = merge(build, {
     },
     plugins: [
         // 独立打包 css（less）文件
-        new ExtractTextPlugin({filename: '[name].css', allChunks: true}),
+        new ExtractTextPlugin({filename: 'css/[name][hash].css', allChunks: true}),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(mode)
         }),

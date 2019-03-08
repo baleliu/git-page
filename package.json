@@ -5,6 +5,7 @@
   "dependencies": {
     "@babel/runtime": "^7.3.4",
     "antd": "^3.13.6",
+    "markdown-it": "^8.4.2",
     "nprogress": "^0.2.0",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
@@ -23,7 +24,8 @@
     "build": "yarn run webpack --config ./webpack/webpack.dev.js",
     "build-prod": "yarn run webpack --config ./webpack/webpack.prod.js",
     "pull": "rm -rf ./repository && yarn run __clone",
-    "push": "yarn run build-prod && yarn run __mkdir && yarn run __commit && yarn run __push"
+    "push": "yarn run build-prod && yarn run __mkdir && yarn run __commit && yarn run __push",
+    "kill": "./config/kill.sh"
   },
   "eslintConfig": {
     "extends": "react-app"

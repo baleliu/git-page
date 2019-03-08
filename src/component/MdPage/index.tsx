@@ -1,9 +1,11 @@
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
+import MarkdownIt from 'markdown-it';
 
 type Props = {
     src?: any
 }
+
+const mIt = MarkdownIt();
 
 class MdPage extends React.Component<Props> {
 
@@ -11,24 +13,16 @@ class MdPage extends React.Component<Props> {
         src: "nothing"
     };
 
-    componentDidMount(): void {
-        /*fetch('https://doc.bale.net.cn/index.md', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'text/markdown; charset=utf-8'
-            },
-        }).then(d => {
-            console.log(d)
-        });*/
 
-        // @ts-ignore
-    }
+    renderHtml = (src: string) => {
+        return mIt.render(src);
+    };
 
     render(): React.ReactNode {
         return (
-            <div>
-                <ReactMarkdown source={this.props.src}/>
-            </div>
+            <div dangerouslySetInnerHTML={{
+                __html: this.renderHtml(this.props.src)
+            }}/>
         );
     }
 }

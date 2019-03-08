@@ -1,6 +1,6 @@
-import React, {lazy, Suspense} from "react";
+import React from "react";
 import MyLayout from "../../component/MyLayout";
-import {Route, HashRouter, Switch, Redirect} from "react-router-dom";
+import {Route, Switch, Redirect, HashRouter as Router} from "react-router-dom";
 import json from './json.md';
 // @ts-ignore
 import LazyLoad from 'Util/LazyLoad';
@@ -23,6 +23,7 @@ export default class RoutePage extends React.Component<any, State> {
     readonly state = {
         routeList: [],
     };
+
     componentWillMount(): void {
         fetch(json)
             .then(response => {
@@ -34,11 +35,19 @@ export default class RoutePage extends React.Component<any, State> {
                 });
             })
     };
+
     renderRoute = (routeList) => {
         this.renderMenu(routeList);
         return (
             <MyLayout menu={this.renderMenu(routeList)}>
                 <Switch>
+                    <Route
+                        key={'root'}
+                        path={'/'}
+                        exact
+                    >
+                        <LazyLoad component={'RootPage'}/>
+                    </Route>
                     {
                         routeList.map(value => {
                             return value.group.map(
@@ -68,7 +77,6 @@ export default class RoutePage extends React.Component<any, State> {
                             )
                         })
                     }
-                    {/*<Redirect from={"/"} to={"/page1"}/>*/}
                 </Switch>
             </MyLayout>
         )
@@ -84,7 +92,7 @@ export default class RoutePage extends React.Component<any, State> {
                 onClick={(e) => {
                     console.log(e)
                 }}
-                style={{width: 256}}
+                style={{width: 300}}
                 defaultSelectedKeys={['1']}
                 defaultOpenKeys={['sub1']}
                 mode="inline"
@@ -134,11 +142,11 @@ export default class RoutePage extends React.Component<any, State> {
 
     render() {
         return (
-            <HashRouter>
+            <Router>
                 {
                     this.renderRoute(this.state.routeList)
                 }
-            </HashRouter>
+            </Router>
         );
     }
 }
