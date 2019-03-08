@@ -2,6 +2,8 @@ import React, {lazy, Suspense} from "react";
 import MyLayout from "../../component/MyLayout";
 import {Route, HashRouter, Switch, Redirect} from "react-router-dom";
 import json from './json.md';
+// @ts-ignore
+import LazyLoad from 'Util/LazyLoad';
 
 import {
     Menu, Icon,
@@ -11,10 +13,6 @@ import {Link} from 'react-router-dom';
 
 const MenuItemGroup = Menu.ItemGroup;
 const SubMenu = Menu.SubMenu;
-
-const x = 'Page1';
-const Page1 = lazy(() => import(`../../view/${x}`));
-const Page2 = lazy(() => import(`../../view/${x}`));
 
 type State = {
     routeList: object
@@ -34,7 +32,6 @@ export default class RoutePage extends React.Component<any, State> {
                 this.setState({
                     routeList: JSON.parse(text)
                 });
-                console.log(this.state)
             })
     };
     renderRoute = (routeList) => {
@@ -49,9 +46,6 @@ export default class RoutePage extends React.Component<any, State> {
                                     console.log(group);
                                     return group.children.map(
                                         child => {
-                                            const Comp = lazy(
-                                                () => import(`../../view/${child.component}`)
-                                            );
                                             let path;
                                             if (value.path !== '/') {
                                                 path = value.path;
@@ -66,9 +60,7 @@ export default class RoutePage extends React.Component<any, State> {
                                                 path={path}
                                                 exact
                                             >
-                                                <Suspense fallback={<h1>Still Loading…</h1>}>
-                                                    <Comp/>
-                                                </Suspense>
+                                                <LazyLoad component={child.component}/>
                                             </Route>
                                         }
                                     )
@@ -139,7 +131,6 @@ export default class RoutePage extends React.Component<any, State> {
             </Menu>
         );
     };
-
 
     render() {
         return (

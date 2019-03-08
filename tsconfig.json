@@ -4,7 +4,8 @@
     "target": "es6",
     "rootDir": "src",
     "lib": [
-      "dom", "es6"
+      "dom",
+      "es6"
     ],
     "allowJs": true,
     "skipLibCheck": true,

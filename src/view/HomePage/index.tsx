@@ -2,19 +2,11 @@ import React, {lazy, Suspense} from "react";
 import {Button, Card, Row, Col, Avatar} from 'antd';
 import {connect} from 'react-redux';
 import {action} from '../../redux/global'
+// @ts-ignore
+import LazyLoad from 'Util/LazyLoad';
 
 const {Meta} = Card;
 
-const RoutePage = lazy(() => import('../RoutePage'))
-
-type State = {
-    isHome: boolean
-}
-
-type Props = {
-    isLogin: string
-    login: any,
-}
 
 @connect(
     (state) => {
@@ -39,9 +31,7 @@ export default class HomePage extends React.Component<any> {
             <div>
                 {
                     isLogin ?
-                        <Suspense fallback={<h1>Still Loading…</h1>}>
-                            <RoutePage/>
-                        </Suspense>
+                        <LazyLoad component={"RoutePage"}/>
                         :
                         <div>
                             <Row>

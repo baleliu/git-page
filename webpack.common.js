@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const webpack = require('webpack');
 const HelloWorldPlugin = require('./webpack/plugin/HelloWorldPlugin');
+const { CheckerPlugin } = require('awesome-typescript-loader')
 const constant = require('./webpack/webpack.constant').constant;
 
 module.exports = {
@@ -36,13 +37,19 @@ module.exports = {
             },
             {
                 test: /\.(ts|tsx)?$/,
-                // use: ['babel-loader', 'ts-loader'],
-                loader: 'babel-loader!awesome-typescript-loader',
-                exclude: /node_modules|bower_components/
+                use: [
+                    {
+                        loader: "babel-loader"
+                    },
+                    {
+                        loader: "awesome-typescript-loader"
+                    }
+                ],
+                exclude: constant.NODE_MODULES
             },
             {
                 test: /\.(md|json)$/,
-                exclude: /(node_modules|bower_components)/,
+                exclude: constant.NODE_MODULES,
                 use: {
                     loader: 'file-loader',
                     options: {
@@ -52,7 +59,7 @@ module.exports = {
             },
             {
                 test: /\.(js|jsx)$/,
-                exclude: /(node_modules|bower_components)/,
+                exclude: constant.NODE_MODULES,
                 use: {
                     loader: 'babel-loader',
                 }
@@ -85,10 +92,19 @@ module.exports = {
 
         ]
     },
+    // 配置路径别名
     resolve: {
-        extensions: ['.tsx', '.ts', '.js']
+        extensions: ['.tsx', '.ts', '.js'],
+        alias: {
+            "Src": path.resolve("src"),
+            "Component": path.resolve("src/component"),
+            "View": path.resolve("src/view"),
+            "Util": path.resolve("src/util"),
+        },
     },
+    // 插件配置
     plugins: [
+        new CheckerPlugin(),
         new HtmlWebpackPlugin({
                 template: './public/index.html',
                 filename: 'index.html'
@@ -101,8 +117,8 @@ module.exports = {
         ]),
         new HelloWorldPlugin("liu wen tao")
     ],
-
     optimization: {
+
         runtimeChunk: {
             // 运行时缓存 更具entryPoint 生成
             name: entryPoint => `runtime.${entryPoint.name}`
@@ -118,7 +134,7 @@ module.exports = {
                 },
                 // 所有来自node_modules的代码
                 vendors: {
-                    test: /[\\/]node_modules[\\/]/,
+                    test: constant.NODE_MODULES,
                     name: "vendors",
                     chunks: "all"
                 }
