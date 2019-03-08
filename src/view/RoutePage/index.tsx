@@ -4,6 +4,7 @@ import {Route, Switch, Redirect, HashRouter as Router} from "react-router-dom";
 import json from './json.md';
 // @ts-ignore
 import LazyLoad from 'Util/LazyLoad';
+import MY404 from '../404';
 
 import {
     Menu, Icon,
@@ -48,6 +49,7 @@ export default class RoutePage extends React.Component<any, State> {
                     >
                         <LazyLoad component={'RootPage'}/>
                     </Route>
+
                     {
                         routeList.map(value => {
                             return value.group.map(
@@ -77,6 +79,9 @@ export default class RoutePage extends React.Component<any, State> {
                             )
                         })
                     }
+                    <Route>
+                        <LazyLoad component={'404'}/>
+                    </Route>
                 </Switch>
             </MyLayout>
         )
