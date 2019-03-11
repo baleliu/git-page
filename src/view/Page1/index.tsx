@@ -25,6 +25,7 @@ export default class Page1 extends React.Component<object, State> {
                     markdown: text,
                 });
                 nprogress.done();
+                console.log(text.match(/(#+)(.*)/g));
             })
     }
 

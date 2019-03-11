@@ -5,11 +5,13 @@ import json from './json.md';
 // @ts-ignore
 import LazyLoad from 'Util/LazyLoad';
 import MY404 from '../404';
+import style from 'Style/macWindow.less'
 
 import {
-    Menu, Icon,
+    Menu, Icon, Card
 } from 'antd';
 import {Link} from 'react-router-dom';
+import Planet from "../../component/Planet";
 
 
 const MenuItemGroup = Menu.ItemGroup;
@@ -24,7 +26,6 @@ export default class RoutePage extends React.Component<any, State> {
     readonly state = {
         routeList: [],
     };
-
     componentWillMount(): void {
         fetch(json)
             .then(response => {
@@ -147,11 +148,24 @@ export default class RoutePage extends React.Component<any, State> {
 
     render() {
         return (
-            <Router>
-                {
-                    this.renderRoute(this.state.routeList)
+            <div style={{
+                margin: '15px'
+            }}>
+                <div className={
+                    `${style["browser-mock-up"]}`
                 }
-            </Router>
+                >
+                    <div className={style["browser-btn"]}/>
+                    <div className={style["browser-inner"]}>
+                        <Router>
+                            {
+                                this.renderRoute(this.state.routeList)
+                            }
+                        </Router>
+                        <Planet/>
+                    </div>
+                </div>
+            </div>
         );
     }
 }

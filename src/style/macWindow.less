@@ -1,0 +1,38 @@
+.browser-mock-up {
+  position: relative;
+  border-top: 2em solid rgba(230, 230, 230, 0.7);
+  border-radius: 3px 3px 0 0;
+  -webkit-box-shadow: 0 0.1em 0.5em 0 rgba(0, 0, 0, 0.28);
+  box-shadow: 0 0.1em 0.5em 0 rgba(0, 0, 0, 0.28);
+}
+
+.browser-inner {
+  overflow: auto;
+  height: calc(100vh - 60px);
+}
+
+.browser-btn {
+  position: absolute;
+  top: -1.25em;
+  left: 1em;
+  display: block;
+  width: .5em;
+  height: .5em;
+  background-color: #f44;
+  border-radius: 50%;
+  -webkit-box-shadow: 0 0 0 2px #f44, 1.5em 0 0 2px #9b3, 3em 0 0 2px #fb5;
+  box-shadow: 0 0 0 2px #f44, 1.5em 0 0 2px #fb5, 3em 0 0 2px #9b3;
+  content: '';
+}
+
+.with-url::after {
+  position: absolute;
+  top: -1.6em;
+  left: 5.5em;
+  display: block;
+  width: calc(100% - 6em);
+  height: 1.2em;
+  background-color: white;
+  border-radius: 2px;
+  content: '';
+}

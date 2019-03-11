@@ -96,13 +96,17 @@ module.exports = {
             "Component": path.resolve("src/component"),
             "View": path.resolve("src/view"),
             "Util": path.resolve("src/util"),
+            "Style": path.resolve("src/style"),
+            "Static": path.resolve("src/static"),
+            "Service": path.resolve("src/service")
         },
     },
     // 插件配置
     plugins: [
         new CheckerPlugin(),
         new HtmlWebpackPlugin({
-                template: './public/index.html',
+            title: "猫DOC",
+            template: './public/index.html',
                 filename: 'index.html'
             }
         ),

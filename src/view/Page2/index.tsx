@@ -1,7 +1,9 @@
 import React from 'react';
-import MdPage from '../../component/MdPage';
 import doc from './doc.md';
 import nprogress from 'nprogress';
+import style from './style.less';
+// @ts-ignore
+import Planet from 'Component/Planet';
 
 type State = {
     markdown: string,
@@ -29,8 +31,17 @@ export default class Page2 extends React.Component<object, State> {
 
     render() {
         return (
-            <div>
-                <MdPage src={this.state.markdown}/>
+            <div className={
+                `${style["browser-mock-up"]} ${style["with-url"]}`
+            }
+            >
+                <iframe
+                    src={"https://baidu.com"}
+                    style={{
+                        height: '100vh',
+                        width: '100%'
+                    }}
+                />
             </div>
         );
     }
