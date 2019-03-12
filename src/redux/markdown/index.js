@@ -8,7 +8,7 @@ export const action = {
             payload: payload
         }
     },
-    clearCategory: () => {
+    clearCategory: () =>{
         return {
             type: CLEAR_CATEGORY,
         }
@@ -26,8 +26,11 @@ export function markdown(state = {category: []}, action) {
                 ]
             };
         case CLEAR_CATEGORY:
+            console.log('---clear---2')
             return {
-                category: []
+                category: [
+
+                ]
             };
         default:
             return state;

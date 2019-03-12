@@ -48,21 +48,6 @@ type PluginOption = {
     strong_open: FuncType,
 }
 
-// 代码高亮配置
-const md = MarkdownIt({
-    highlight: function (src, lang) {
-        const result = addLineNumber(src);
-        if (lang && hljs.getLanguage(lang)) {
-            try {
-                return '<pre class="hljs"><code>' +
-                    hljs.highlight(lang, result, true).value +
-                    '</code></pre>';
-            } catch (__) {
-            }
-        }
-        return '<pre class="hljs"><code>' + md.utils.escapeHtml(result) + '</code></pre>';
-    }
-});
 
 /**
  * 代码行号渲染
@@ -145,12 +130,13 @@ const optionRunner = (option, type, tokens, id, targetToken) => {
 
 type Props = {
     src: string
-    appendCategory?: any
+    addCategory?: any
     clearCategory?: any
 }
 
 type State = {
     content: string
+    md
 }
 
 /**
@@ -161,18 +147,35 @@ class MdPage extends React.Component<Props, State> {
         super(props);
         this.state = {
             content: '',
-        }
+            md: null,
+        };
     }
 
     componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
-        const {appendCategory, src} = nextProps;
+        const {addCategory, src} = nextProps;
+        // 代码高亮配置
+        const md = MarkdownIt({
+            highlight: function (src, lang) {
+                const result = addLineNumber(src);
+                if (lang && hljs.getLanguage(lang)) {
+                    try {
+                        return '<pre class="hljs"><code>' +
+                            hljs.highlight(lang, result, true).value +
+                            '</code></pre>';
+                    } catch (__) {
+                    }
+                }
+                return '<pre class="hljs"><code>' + md.utils.escapeHtml(result) + '</code></pre>';
+            }
+        });
         if (this.textAssert(src)) {
             md.use(
                 plugin, 'ruler_ext_base', 'asc', {
                     heading_open: (tokens, i, targetToken) => {
                         const markup = targetToken.markup.length;
                         const content = tokens[i + targetToken.nesting].content;
-                        appendCategory({
+                        console.log('-----add-----')
+                        addCategory({
                             markup: markup,
                             content: content,
                         });
@@ -180,15 +183,23 @@ class MdPage extends React.Component<Props, State> {
 
                 },
             );
-            const content = this.renderHtml(src);
-            this.setContent(content);
+            const content = md.render(src);;
+            this.setContent(md, content);
         }
     }
 
+    componentWillMount(): void {
+        this.clearCategory();
+    }
+
     componentWillUnmount(): void {
+        this.clearCategory();
+    }
+
+    clearCategory = () => {
         const {clearCategory} = this.props;
         clearCategory();
-    }
+    };
 
     /**
      * 校验文本合理性
@@ -202,18 +213,12 @@ class MdPage extends React.Component<Props, State> {
      * 预加载文本
      * @param content
      */
-    setContent = (content: string): void => {
+    setContent = (md, content: string): void => {
         this.setState({
             ...this.state,
+            md: md,
             content: content
         })
-    };
-    /**
-     * 获取渲染页面
-     * @param src
-     */
-    renderHtml = (src: string) => {
-        return md.render(src);
     };
 
     render(): React.ReactNode {

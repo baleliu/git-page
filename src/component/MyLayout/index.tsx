@@ -105,24 +105,6 @@ class MyLayout extends React.Component<Props> {
                         DOC ©2019 Created by Bale.liu
                     </Footer>
                 </Layout>
-                {/*<Sider
-                    theme={"light"}
-                    breakpoint={'xs'}
-                    onBreakpoint={this.onBreakpoint}
-                    collapsed={this.state.collapsed}
-                    collapsedWidth={'0'}
-                    width={'300'}
-                    onCollapse={this.onCollapse}
-                    style={{
-                        overflow: 'auto',
-                        height: '100%',
-                        position: 'absolute',
-                        right: 0,
-                        boxShadow: styleConstant.boxShadow
-                    }}
-                >
-                    {this.props.menu}
-                </Sider>*/}
                 <RightLayout
                     onBreakpoint={this.onBreakpoint}
                     collapsed={this.state.collapsed}

@@ -51,7 +51,7 @@ export default class Page1 extends React.Component<SubProps, State> {
             <div>
                 <MdPage
                     src={this.state.markdown}
-                    appendCategory={this.props.addCategory}
+                    addCategory={this.props.addCategory}
                     clearCategory={this.props.clearCategory}
                 />
             </div>
