@@ -10,7 +10,7 @@ module.exports = merge(common, {
     module: {
         rules: [
             {
-                test: /\.less$/,
+                test: /\.module\.less$/,
                 exclude: constant.NODE_MODULES,
                 use: [
                     {
@@ -24,6 +24,44 @@ module.exports = merge(common, {
                         loader: "less-loader"
                     }],
             },
+            {
+                test: /\.module\.css$/,
+                exclude: constant.NODE_MODULES,
+                use: [
+                    {
+                        loader: "style-loader"
+                    }, {
+                        loader: 'css-loader',
+                        options: {
+                            modules: true,
+                        }
+                    }],
+            },
+
+            {
+                test: /^.((?!module).)*\.css$/,
+                exclude: constant.NODE_MODULES,
+                use: [
+                    {
+                        loader: "style-loader"
+                    }, {
+                        loader: 'css-loader',
+                    }],
+            },
+            {
+                test: /^.((?!module).)*\.less$/,
+                exclude: constant.NODE_MODULES,
+                use: [
+                    {
+                        loader: "style-loader"
+                    }, {
+                        loader: 'css-loader',
+                    },
+                    {
+                        loader: "less-loader"
+                    }
+                ],
+            }
         ]
     },
     devServer: {

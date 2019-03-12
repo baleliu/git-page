@@ -1,36 +1,43 @@
 import React, {lazy, Suspense} from "react";
 import {Button, Card, Row, Col, Avatar} from 'antd';
 import {connect} from 'react-redux';
-import {action} from '../../redux/global'
 // @ts-ignore
 import LazyLoad from 'Util/LazyLoad';
+// @ts-ignore
+import Session from 'Util/session';
 
 const {Meta} = Card;
 
+type State = {
+    loginFlag
+}
 
-@connect(
-    (state) => {
-        return {
-            isLogin: state.global.isLogin
-        }
-    },
-    (dispatch) => {
-        return {
-            login: () => dispatch(action.login),
-            //init: () => dispatch(action.init)
+export default class LoginPage extends React.Component<any, State> {
+
+    constructor(props){
+        super(props);
+        this.state = {
+            loginFlag: Session.isLogin()
         }
     }
-)
-export default class LoginPage extends React.Component<any> {
+
     componentWillMount(): void {
     }
 
+    login = (): void => {
+        console.log('---login---')
+        Session.login();
+        this.setState({
+            ...this.state,
+            loginFlag: true
+        })
+    };
+
     render() {
-        const {isLogin, login} = this.props;
         return (
             <div>
                 {
-                    isLogin ?
+                    this.state.loginFlag ?
                         <LazyLoad component={"RoutePage"}/>
                         :
                         <div>
@@ -38,7 +45,7 @@ export default class LoginPage extends React.Component<any> {
                                 <Col sm={{span: 24}} lg={{span: 8, offset: 8}}>
                                     <Card hoverable={true} title="测试首页 " bordered={true} style={{top: 200}}
                                           actions={[
-                                              <Button onClick={login}>进入文档页面</Button>
+                                              <Button onClick={this.login}>进入文档页面</Button>
                                           ]}
                                     >
                                         <Meta

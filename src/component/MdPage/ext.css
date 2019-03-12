@@ -1,0 +1,7 @@
+.hljs-number{
+    border: 1px solid dimgray;
+    user-select: none !important;
+}
+.hljs-symbol{
+    user-select: none !important;
+}

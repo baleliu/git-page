@@ -7,25 +7,6 @@ const constant = require('./webpack.constant').constant;
 const mode= 'development';
 
 module.exports = merge(build, {
-    module: {
-        rules: [
-            {
-                test: /\.less$/,
-                exclude: constant.NODE_MODULES,
-                use: [
-                    {
-                        loader: "style-loader"
-                    }, {
-                        loader: 'css-loader',
-                        options: {
-                            modules: true,
-                        }
-                    }, {
-                        loader: "less-loader"
-                    }],
-            },
-        ]
-    },
     mode: mode,
     devtool: 'inline-source-map',
     plugins: [

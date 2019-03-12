@@ -4,6 +4,8 @@ import {
     Layout, Menu, Breadcrumb, Icon,
 } from 'antd';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import RightLayout from '../RightLayout'
 
 const {
     Header, Content, Footer, Sider,
@@ -25,7 +27,6 @@ const styleConstant = {
 type Props = {
     menu: any
 }
-
 
 class MyLayout extends React.Component<Props> {
     state = {
@@ -61,12 +62,10 @@ class MyLayout extends React.Component<Props> {
 
 
     onCollapse = (collapsed: boolean) => {
-        console.log(collapsed);
         this.setState({collapsed});
     };
 
     render() {
-        // @ts-ignore
         return (
             <Layout style={{minHeight: '100vh',}}>
                 <Layout style={this.state.contentStyle}>
@@ -97,14 +96,16 @@ class MyLayout extends React.Component<Props> {
                             <Breadcrumb.Item>Bill</Breadcrumb.Item>
                         </Breadcrumb>
                         <div style={{padding: 24, background: '#fff', minHeight: '85vh'}}>
-                            {this.props.children}
+                            {
+                                this.props.children
+                            }
                         </div>
                     </Content>
                     <Footer style={{textAlign: 'center'}}>
                         DOC ©2019 Created by Bale.liu
                     </Footer>
                 </Layout>
-                <Sider
+                {/*<Sider
                     theme={"light"}
                     breakpoint={'xs'}
                     onBreakpoint={this.onBreakpoint}
@@ -121,7 +122,21 @@ class MyLayout extends React.Component<Props> {
                     }}
                 >
                     {this.props.menu}
-                </Sider>
+                </Sider>*/}
+                <RightLayout
+                    onBreakpoint={this.onBreakpoint}
+                    collapsed={this.state.collapsed}
+                    onCollapse={this.onCollapse}
+                    style={{
+                        overflow: 'auto',
+                        height: '100%',
+                        position: 'absolute',
+                        right: 0,
+                        boxShadow: styleConstant.boxShadow
+                    }}
+                >
+                    {this.props.menu}
+                </RightLayout>
             </Layout>
         );
     }

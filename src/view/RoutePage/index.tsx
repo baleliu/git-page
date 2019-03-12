@@ -4,8 +4,7 @@ import {Route, Switch, Redirect, HashRouter as Router} from "react-router-dom";
 import json from './json.md';
 // @ts-ignore
 import LazyLoad from 'Util/LazyLoad';
-import MY404 from '../404';
-import style from 'Style/macWindow.less'
+import style from 'Style/macWindow.module.less'
 
 import {
     Menu, Icon, Card
@@ -18,14 +17,17 @@ const MenuItemGroup = Menu.ItemGroup;
 const SubMenu = Menu.SubMenu;
 
 type State = {
-    routeList: object
+    routeList: object;
+    mdPageCategory: object;
 }
 
 export default class RoutePage extends React.Component<any, State> {
 
     readonly state = {
         routeList: [],
+        mdPageCategory: []
     };
+
     componentWillMount(): void {
         fetch(json)
             .then(response => {
@@ -38,8 +40,23 @@ export default class RoutePage extends React.Component<any, State> {
             })
     };
 
+    appendMdPageCategory = (category) => {
+        console.log(category)
+
+        /*this.setState({
+            ...this.state,
+            mdPageCategory: [
+                ...this.state.mdPageCategory,
+                category
+            ]
+        })*/
+    };
+
+    clearMdPageCategory = () => {
+        console.log('--clear--')
+    };
+
     renderRoute = (routeList) => {
-        this.renderMenu(routeList);
         return (
             <MyLayout menu={this.renderMenu(routeList)}>
                 <Switch>
@@ -72,7 +89,13 @@ export default class RoutePage extends React.Component<any, State> {
                                                 path={path}
                                                 exact
                                             >
-                                                <LazyLoad component={child.component}/>
+                                                <LazyLoad
+                                                    component={child.component}
+                                                    attribute={{
+                                                        appendMdPageCategory: this.appendMdPageCategory,
+                                                        clearMdPageCategory: this.clearMdPageCategory,
+                                                    }}
+                                                />
                                             </Route>
                                         }
                                     )

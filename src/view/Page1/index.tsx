@@ -2,13 +2,31 @@ import React from 'react';
 import MdPage from '../../component/MdPage';
 import doc from './doc.md';
 import nprogress from 'nprogress';
+// @ts-ignore
+import {SubProps} from "Util/LazyLoad";
+import {action} from "../../redux/markdown";
+import {connect} from 'react-redux';
 
 
 type State = {
     markdown: string,
 }
 
-export default class Page1 extends React.Component<object, State> {
+
+@connect(
+    null,
+    (dispatch) => {
+        return {
+            addCategory: (category) => dispatch(action.addCategory(category)),
+            clearCategory: () => dispatch(action.clearCategory())
+        }
+    }
+)
+export default class Page1 extends React.Component<SubProps, State> {
+
+    constructor(props) {
+        super(props);
+    }
 
     readonly state: State = {
         markdown: "",
@@ -25,14 +43,16 @@ export default class Page1 extends React.Component<object, State> {
                     markdown: text,
                 });
                 nprogress.done();
-                console.log(text.match(/(#+)(.*)/g));
             })
     }
 
     render() {
         return (
             <div>
-                <MdPage src={this.state.markdown}
+                <MdPage
+                    src={this.state.markdown}
+                    appendCategory={this.props.addCategory}
+                    clearCategory={this.props.clearCategory}
                 />
             </div>
         );

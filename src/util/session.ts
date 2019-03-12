@@ -1,19 +1,26 @@
 const YES = '1';
 const NO = '0';
 
-export const init = () => {
+const init = () => {
     sessionStorage.clear();
     window.sessionStorage.setItem('login', NO);
 };
 
-export const login = () => {
+const login = () => {
     window.sessionStorage.setItem('login', YES);
 };
 
-export const logout = () => {
+const logout = () => {
     window.sessionStorage.setItem('login', NO);
 };
 
-export const isLogin = () => {
+const isLogin = () => {
     return window.sessionStorage.getItem('login') === YES;
+}
+
+
+export default {
+    login: login,
+    isLogin: isLogin,
+    logout: logout
 }

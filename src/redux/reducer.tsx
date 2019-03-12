@@ -1,10 +1,10 @@
 import {counter, testCounter} from './counter/action';
-import {global} from './global';
+import {markdown} from './markdown'
 import {combineReducers} from 'redux';
 
 
 export default combineReducers({
-    global,
+    markdown,
     counter,
-    testCounter
+    testCounter,
 });

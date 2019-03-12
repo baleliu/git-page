@@ -1,158 +1,225 @@
 import React from 'react';
 import MarkdownIt from 'markdown-it';
-import Util from 'markdown-it/lib/common/utils';
+import hljs from 'highlight.js';
+import './default.css';
+import './ext.css';
+import {action} from "../../redux/markdown";
+import {connect} from 'react-redux';
 
-var escapeHtml = Util.escapeHtml;
-var unescapeAll = Util.unescapeAll;
+hljs.initHighlightingOnLoad();
+
+interface FuncType {
+    (tokens, id): void
+}
+
+type OrderType = 'asc' | 'desc';
+
+type PluginOption = {
+    // 标题
+    heading_open?: FuncType,
+    // 代码块
+    fence?: FuncType,
+    // 通用文本
+    text: FuncType,
+    // 链接
+    link_open: FuncType,
+
+    // --here--------------------------
+
+    // 单行代码
+    code_inline: FuncType,
+    // 引用块
+    blockquote_open: FuncType,
+    // 文本
+    paragraph_open: FuncType,
+    // 分割线
+    hr: FuncType,
+    // 图片
+    image: FuncType,
+    // 无序列表
+    bullet_list_open: FuncType,
+    // 有序列表
+    ordered_list_close: FuncType,
+    // 列表行
+    list_item_open: FuncType,
+    // 斜体
+    em_open: FuncType,
+    // 粗体
+    strong_open: FuncType,
+}
+
+// 代码高亮配置
+const md = MarkdownIt({
+    highlight: function (src, lang) {
+        const result = addLineNumber(src);
+        if (lang && hljs.getLanguage(lang)) {
+            try {
+                return '<pre class="hljs"><code>' +
+                    hljs.highlight(lang, result, true).value +
+                    '</code></pre>';
+            } catch (__) {
+            }
+        }
+        return '<pre class="hljs"><code>' + md.utils.escapeHtml(result) + '</code></pre>';
+    }
+});
+
+/**
+ * 代码行号渲染
+ * @param src
+ */
+const addLineNumber = (src: string): string => {
+    let result = String();
+    let srcArray = src.split('\n');
+    for (let i = 0; i < srcArray.length; i++) {
+        result += i + ' ' + srcArray[i] + '\n';
+    }
+    return result;
+};
+
+/**
+ * 插件主体
+ * @param md
+ * @param ruleName
+ * @param order
+ * @param option
+ */
+const plugin = (md, ruleName, order: OrderType, option: PluginOption) => {
+    md.core.ruler.push(ruleName, (state) => {
+        function doSwitch(type, i, targetToken) {
+            switch (type) {
+                case 'link_open':
+                    optionRunner(option, 'link_open', state.tokens, i, targetToken);
+                    break;
+                case 'heading_open':
+                    optionRunner(option, 'heading_open', state.tokens, i, targetToken);
+                    break;
+                case 'fence':
+                    optionRunner(option, 'fence', state.tokens, i, targetToken);
+                    break;
+                case 'text':
+                    // 过滤掉无用的token
+                    if (targetToken.content !== '') {
+                        optionRunner(option, 'text', state.tokens, i, targetToken);
+                    }
+                    break;
+                default:
+            }
+        }
+
+        if (order === 'asc') {
+            for (let i = 0; i < state.tokens.length; i++) {
+                if (state.tokens[i].type === 'inline') {
+                    const tokenChildren = state.tokens[i].children;
+                    for (let j = 0; j < tokenChildren.length; j++) {
+                        doSwitch(tokenChildren[j].type, i, tokenChildren[j]);
+                    }
+                } else {
+                    doSwitch(state.tokens[i].type, i, state.tokens[i]);
+                }
+
+            }
+        } else {
+            for (let i = state.tokens.length - 1; i >= 0; i--) {
+                doSwitch(state.tokens[i].type, i, state.tokens[i]);
+            }
+        }
+    });
+};
+
+/**
+ * 运行插件配置
+ * @param option
+ * @param type
+ * @param tokens
+ * @param id
+ * @param targetToken
+ */
+const optionRunner = (option, type, tokens, id, targetToken) => {
+    if (option) {
+        if (option[type]) {
+            option[type](tokens, id, targetToken);
+        }
+    }
+};
 
 type Props = {
-    src?: any
+    src: string
+    appendCategory?: any
+    clearCategory?: any
 }
 
-const md = MarkdownIt('commonmark');
-
-const test = (x, options) => {
-    console.log("-----test-----")
-    console.log(options)
+type State = {
+    content: string
 }
 
-const headerPlugin = (md, ruleName, tokenType, iterator) => {
-
-};
-
-function for_inline_plugin(md, ruleName, tokenType, iterator) {
-
-    function scan(state) {
-        console.log(state)
-        var i, blkIdx, inlineTokens;
-
-        for (blkIdx = state.tokens.length - 1; blkIdx >= 0; blkIdx--) {
-
-
-            if (state.tokens[blkIdx].type !== 'heading_open') {
-                continue;
-            }
-
-            state.tokens[blkIdx].attrs = [];
-            inlineTokens = state.tokens;
-            // state.tokens[blkIdx]= inlineTokens;
-            console.log(state.tokens[blkIdx])
-            iterator(inlineTokens, blkIdx);
-
-
-            /*for (i = inlineTokens.length - 1; i >= 0; i--) {
-                if (inlineTokens[i].type !== tokenType) {
-                    continue;
-                }
-                console.log("-")
-                iterator(inlineTokens, i);
-            }*/
+/**
+ * markdown 渲染页面
+ */
+class MdPage extends React.Component<Props, State> {
+    constructor(props) {
+        super(props);
+        this.state = {
+            content: '',
         }
     }
 
-    md.core.ruler.push(ruleName, scan);
-};
+    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+        const {appendCategory, src} = nextProps;
+        if (this.textAssert(src)) {
+            md.use(
+                plugin, 'ruler_ext_base', 'asc', {
+                    heading_open: (tokens, i, targetToken) => {
+                        const markup = targetToken.markup.length;
+                        const content = tokens[i + targetToken.nesting].content;
+                        appendCategory({
+                            markup: markup,
+                            content: content,
+                        });
+                    },
 
-md.use(
-    for_inline_plugin, 'url_new_win', 'heading_open', function (tokens, idx) {
-
-        console.log(tokens[idx])
-        // tokens[idx].attrs=[ 'className', 'xxxx' ];
-        tokens[idx].attrPush(['className', 'xxxx']);
-    }
-);
-
-
-var defaultRender = md.renderer.rules.image,
-    vimeoRE = /^https?:\/\/(www\.)?vimeo.com\/(\d+)($|\/)/;
-
-
-md.renderer.rules.fence = function (tokens, idx, options, env, slf) {
-    var token = tokens[idx],
-        info = token.info ? unescapeAll(token.info).trim() : '',
-        langName = '',
-        highlighted, i, tmpAttrs, tmpToken;
-
-    if (info) {
-        langName = info.split(/\s+/g)[0];
-    }
-
-    if (options.highlight) {
-        highlighted = options.highlight(token.content, langName) || escapeHtml(token.content);
-    } else {
-        highlighted = escapeHtml(token.content);
-    }
-
-    if (highlighted.indexOf('<pre') === 0) {
-        return highlighted + '\n';
-    }
-
-    // If language exists, inject class gently, without modifying original token.
-    // May be, one day we will add .clone() for token and simplify this part, but
-    // now we prefer to keep things local.
-    if (info) {
-        i = token.attrIndex('class');
-        tmpAttrs = token.attrs ? token.attrs.slice() : [];
-
-        if (i < 0) {
-            tmpAttrs.push(['class', options.langPrefix + langName]);
-        } else {
-            tmpAttrs[i][1] += ' ' + options.langPrefix + langName;
+                },
+            );
+            const content = this.renderHtml(src);
+            this.setContent(content);
         }
-
-        // Fake token just to render attributes
-        tmpToken = {
-            attrs: tmpAttrs
-        };
-
-        return '<pre><code' + slf.renderAttrs(tmpToken) + '>'
-            + highlighted
-            + '</code></pre>\n';
-
-
     }
-    return '<pre style="border: 1px solid black"><code' + slf.renderAttrs(token) + '>'
-        + highlighted
-        + '</code></pre>\n';
-};
 
-md.renderer.rules.text = function (tokens, idx /*, options, env */) {
-    return escapeHtml(
-        tokens[idx].content
-    );
-};
+    componentWillUnmount(): void {
+        const {clearCategory} = this.props;
+        clearCategory();
+    }
 
-
-md.renderer.html_block = function (tokens, idx /*, options, env */) {
-
-    return tokens[idx].content;
-};
-md.renderer.html_inline = function (tokens, idx /*, options, env */) {
-
-    return tokens[idx].content;
-};
-
-
-// console.log(md.renderer.rules);
-
-
-class MdPage extends React.Component<Props> {
-
-    static defaultProps = {
-        src: "nothing"
+    /**
+     * 校验文本合理性
+     * @param text
+     */
+    textAssert = (text: string): boolean => {
+        return text && text != ''
     };
 
-
+    /**
+     * 预加载文本
+     * @param content
+     */
+    setContent = (content: string): void => {
+        this.setState({
+            ...this.state,
+            content: content
+        })
+    };
+    /**
+     * 获取渲染页面
+     * @param src
+     */
     renderHtml = (src: string) => {
-
-
         return md.render(src);
     };
 
     render(): React.ReactNode {
         return (
             <div dangerouslySetInnerHTML={{
-                __html: this.renderHtml(this.props.src)
+                __html: this.state.content
             }}/>
         );
     }
