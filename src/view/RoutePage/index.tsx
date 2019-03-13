@@ -1,6 +1,6 @@
 import React from "react";
 import MyLayout from "../../component/MyLayout";
-import {Route, Switch, Redirect, HashRouter as Router} from "react-router-dom";
+import {Route, Switch, Redirect, BrowserRouter as Router} from "react-router-dom";
 import json from './json.md';
 // @ts-ignore
 import LazyLoad from 'Util/LazyLoad';
@@ -11,7 +11,8 @@ import {
 } from 'antd';
 import {Link} from 'react-router-dom';
 import Planet from "../../component/Planet";
-
+import {action} from "../../redux/markdown";
+import {connect} from 'react-redux';
 
 const MenuItemGroup = Menu.ItemGroup;
 const SubMenu = Menu.SubMenu;
@@ -21,12 +22,30 @@ type State = {
     mdPageCategory: object;
 }
 
+@connect(
+    (state) => {
+        return {
+            pageContainerRef: state.markdown.pageContainerRef
+        }
+    },
+    (dispatch) => {
+        return {
+            addPageContainerRef: (ref) => dispatch(action.addPageContainerRef(ref))
+        }
+    }
+)
 export default class RoutePage extends React.Component<any, State> {
+
+    browserInnerRef;
 
     readonly state = {
         routeList: [],
         mdPageCategory: []
     };
+
+    constructor(props) {
+        super(props);
+    }
 
     componentWillMount(): void {
         fetch(json)
@@ -38,22 +57,7 @@ export default class RoutePage extends React.Component<any, State> {
                     routeList: JSON.parse(text)
                 });
             })
-    };
 
-    appendMdPageCategory = (category) => {
-        console.log(category)
-
-        /*this.setState({
-            ...this.state,
-            mdPageCategory: [
-                ...this.state.mdPageCategory,
-                category
-            ]
-        })*/
-    };
-
-    clearMdPageCategory = () => {
-        console.log('--clear--')
     };
 
     renderRoute = (routeList) => {
@@ -91,10 +95,6 @@ export default class RoutePage extends React.Component<any, State> {
                                             >
                                                 <LazyLoad
                                                     component={child.component}
-                                                    attribute={{
-                                                        appendMdPageCategory: this.appendMdPageCategory,
-                                                        clearMdPageCategory: this.clearMdPageCategory,
-                                                    }}
                                                 />
                                             </Route>
                                         }
@@ -179,8 +179,9 @@ export default class RoutePage extends React.Component<any, State> {
                 }
                 >
                     <div className={style["browser-btn"]}/>
-                    <div className={style["browser-inner"]}>
-                        <Router>
+                    <div id={"liuwentao"} className={style["browser-inner"]}
+                    >
+                        <Router basename={"/"}>
                             {
                                 this.renderRoute(this.state.routeList)
                             }

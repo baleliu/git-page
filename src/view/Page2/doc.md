@@ -177,7 +177,7 @@ firewall-cmd --zone=public --add-port=6443/tcp --permanent && firewall-cmd --rel
 firewall-cmd --zone=public --add-port=10250/tcp --permanent && firewall-cmd --reload
 ```
 
-### 配置tomcat RC
+### abc
 配置docker镜像
 ```
 // 查看所需要镜像

@@ -25,7 +25,6 @@ export default class LoginPage extends React.Component<any, State> {
     }
 
     login = (): void => {
-        console.log('---login---')
         Session.login();
         this.setState({
             ...this.state,

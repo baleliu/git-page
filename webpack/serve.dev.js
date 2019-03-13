@@ -65,6 +65,7 @@ module.exports = merge(common, {
         ]
     },
     devServer: {
+        historyApiFallback: true,
         inline: true,
         port: 3000,
         contentBase: './dist',

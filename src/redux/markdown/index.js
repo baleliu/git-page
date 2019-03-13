@@ -1,7 +1,7 @@
 const ADD_CATEGORY = 'add_category';
 const CLEAR_CATEGORY = 'clear_category';
 const OPEN_MD_PAGE = "open_category";
-const CLOSE_category = "clao"
+const ADD_PAGE_CONTAINER_REF = "add_page_container_ref";
 
 export const action = {
     addCategory: (payload) => {
@@ -19,13 +19,20 @@ export const action = {
         return {
             type: OPEN_MD_PAGE
         }
+    },
+    addPageContainerRef: (payload) => {
+        return {
+            type: ADD_PAGE_CONTAINER_REF,
+            payload: payload
+        }
     }
 };
 
 const initState = () => {
     return {
         category: [],
-        isOpen: false
+        isOpen: false,
+        pageContainerRef: window,
     }
 };
 
@@ -50,6 +57,11 @@ export function markdown(state = initState(), action) {
                 ...state,
                 isOpen: true,
             };
+        case ADD_PAGE_CONTAINER_REF:
+            return {
+                ...state,
+                pageContainerRef: action.payload
+            }
         default:
             return state;
     }

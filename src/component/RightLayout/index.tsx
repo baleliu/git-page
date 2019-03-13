@@ -1,9 +1,10 @@
 import React from "react";
-import {Layout, Switch, Card, Menu} from "antd";
-
-const {Sider} = Layout;
+import {Layout, Switch, Card, Menu, Anchor} from "antd";
 import {connect} from 'react-redux';
 import {action} from "../../redux/markdown";
+
+const {Link} = Anchor;
+const {Sider} = Layout;
 
 type State = {
     children: any
@@ -18,12 +19,19 @@ type State = {
     (state) => {
         return {
             category: state.markdown.category,
-            showCategory: state.markdown.isOpen
+            showCategory: state.markdown.isOpen,
+            pageContainerRef: state.markdown.pageContainerRef
         }
     },
-    null
+    (dispatch) => {
+        return {
+            addPageContainerRef: (ref) => dispatch(action.addPageContainerRef(ref))
+        }
+    }
 )
 export default class RightLayout extends React.Component<any, State> {
+
+    anchorContainerRef;
 
     readonly state = {
         children: null,
@@ -31,31 +39,31 @@ export default class RightLayout extends React.Component<any, State> {
         showCategory: false
     };
 
+    constructor(props){
+        super(props);
+    }
+
     componentWillReceiveProps(nextProps: Readonly<any>, nextContext: any): void {
-        console.log('-----next-----');
-        console.log(nextProps);
         this.setState({
             ...this.state,
             showCategory: nextProps.showCategory
         });
-        console.log('-----next-----');
     }
 
     renderMdCategory = (category) => {
         let key = 0;
         return (
-            <Menu
-                mode="inline"
-            >{
-                category.map(c => {
-                    return (
-                        <Menu.Item key={key++}>
-                            <span>{c.content}</span>
-                        </Menu.Item>
-                    )
-                })
-            }
-            </Menu>
+            <Anchor
+                getContainer={()=>document.getElementById('liuwentao')}
+            >
+                {
+                    category.map(c => {
+                        return (
+                            <Link key={key++} href={`#${c.content}`} title={c.content}/>
+                        )
+                    })
+                }
+            </Anchor>
         )
     };
 

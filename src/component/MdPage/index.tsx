@@ -5,6 +5,9 @@ import './default.css';
 import './ext.css';
 import {action} from "../../redux/markdown";
 import {connect} from 'react-redux';
+import {Anchor} from 'antd';
+
+const {Link} = Anchor;
 
 hljs.initHighlightingOnLoad();
 
@@ -168,6 +171,16 @@ class MdPage extends React.Component<Props, State> {
                 return '<pre class="hljs"><code>' + md.utils.escapeHtml(result) + '</code></pre>';
             }
         });
+        md.renderer.rules.heading_open = function (tokens, idx, options, env, slf) {
+            const token = tokens[idx];
+            return `<${token.tag}><span style="border : 1px solid black">`;
+        };
+        md.renderer.rules.heading_close = function (tokens, idx, options, env, slf) {
+            const token = tokens[idx];
+            const contentToken = tokens[idx + token.nesting];
+            const content = contentToken.content.replace(" ", "-")
+            return `</span><a id="${content}" href="#${content}" class="anchor">#</a></${token.tag}>`;
+        };
         if (this.textAssert(src)) {
             md.use(
                 plugin, 'ruler_ext_base', 'asc', {
@@ -182,7 +195,7 @@ class MdPage extends React.Component<Props, State> {
 
                 },
             );
-            const content = md.render(src);;
+            const content = md.render(src);
             this.setContent(md, content);
         }
     }
@@ -222,9 +235,11 @@ class MdPage extends React.Component<Props, State> {
 
     render(): React.ReactNode {
         return (
-            <div dangerouslySetInnerHTML={{
-                __html: this.state.content
-            }}/>
+            <div>
+                <div dangerouslySetInnerHTML={{
+                    __html: this.state.content
+                }}/>
+            </div>
         );
     }
 }
