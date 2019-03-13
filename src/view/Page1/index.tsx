@@ -18,7 +18,8 @@ type State = {
     (dispatch) => {
         return {
             addCategory: (category) => dispatch(action.addCategory(category)),
-            clearCategory: () => dispatch(action.clearCategory())
+            clearCategory: () => dispatch(action.clearCategory()),
+            openMdPage: () => dispatch(action.openMdPage())
         }
     }
 )
@@ -44,6 +45,8 @@ export default class Page1 extends React.Component<SubProps, State> {
                 });
                 nprogress.done();
             })
+        const {openMdPage} = this.props;
+        openMdPage();
     }
 
     render() {

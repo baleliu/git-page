@@ -174,7 +174,6 @@ class MdPage extends React.Component<Props, State> {
                     heading_open: (tokens, i, targetToken) => {
                         const markup = targetToken.markup.length;
                         const content = tokens[i + targetToken.nesting].content;
-                        console.log('-----add-----')
                         addCategory({
                             markup: markup,
                             content: content,

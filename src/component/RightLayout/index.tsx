@@ -17,7 +17,8 @@ type State = {
 @connect(
     (state) => {
         return {
-            category: state.markdown.category
+            category: state.markdown.category,
+            showCategory: state.markdown.isOpen
         }
     },
     null
@@ -29,6 +30,16 @@ export default class RightLayout extends React.Component<any, State> {
         category: null,
         showCategory: false
     };
+
+    componentWillReceiveProps(nextProps: Readonly<any>, nextContext: any): void {
+        console.log('-----next-----');
+        console.log(nextProps);
+        this.setState({
+            ...this.state,
+            showCategory: nextProps.showCategory
+        });
+        console.log('-----next-----');
+    }
 
     renderMdCategory = (category) => {
         let key = 0;
@@ -61,14 +72,16 @@ export default class RightLayout extends React.Component<any, State> {
                 style={this.props.style}
             >
                 <Card>
-                    <Switch defaultChecked onChange={
-                        () => {
-                            this.setState({
-                                ...this.state,
-                                showCategory: !this.state.showCategory
-                            })
-                        }
-                    }/>
+                    <Switch defaultChecked
+                            checked={this.state.showCategory}
+                            onChange={
+                                () => {
+                                    this.setState({
+                                        ...this.state,
+                                        showCategory: !this.state.showCategory
+                                    })
+                                }
+                            }/>
                 </Card>
                 {
                     this.state.showCategory ?
