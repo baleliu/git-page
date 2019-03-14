@@ -5,6 +5,7 @@ const webpack = require('webpack');
 const HelloWorldPlugin = require('./webpack/plugin/HelloWorldPlugin');
 const { CheckerPlugin } = require('awesome-typescript-loader')
 const constant = require('./webpack/webpack.constant').constant;
+const config = require('./webpack/webpack.constant').config;
 
 module.exports = {
     // 入口文件
@@ -115,7 +116,10 @@ module.exports = {
             {from: 'CNAME'},
             // {from: 'public/404.html'}
         ]),
-        new HelloWorldPlugin("liu wen tao")
+        new HelloWorldPlugin("liu wen tao"),
+        new webpack.DefinePlugin({
+            'process.env.BASE_URL': JSON.stringify(config.BASE_URL)
+        })
     ],
     optimization: {
 

@@ -31,8 +31,6 @@ type State = {
 )
 export default class RightLayout extends React.Component<any, State> {
 
-    anchorContainerRef;
-
     readonly state = {
         children: null,
         category: null,
@@ -54,7 +52,13 @@ export default class RightLayout extends React.Component<any, State> {
         let key = 0;
         return (
             <Anchor
-                getContainer={()=>document.getElementById('liuwentao')}
+                style={{
+                    marginLeft: '10px',
+                    position: 'fixed',
+                }}
+                affix
+                showInkInFixed={false}
+                getContainer={()=>window}
             >
                 {
                     category.map(c => {

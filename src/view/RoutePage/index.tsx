@@ -1,10 +1,12 @@
 import React from "react";
-import MyLayout from "../../component/MyLayout";
+// @ts-ignore
+import BaseLayout from "Component/BaseLayout";
 import {Route, Switch, Redirect, BrowserRouter as Router} from "react-router-dom";
 import json from './json.md';
 // @ts-ignore
 import LazyLoad from 'Util/LazyLoad';
-import style from 'Style/macWindow.module.less'
+// @ts-ignore;
+import {env} from 'Util/configUtil';
 
 import {
     Menu, Icon, Card
@@ -36,8 +38,6 @@ type State = {
 )
 export default class RoutePage extends React.Component<any, State> {
 
-    browserInnerRef;
-
     readonly state = {
         routeList: [],
         mdPageCategory: []
@@ -62,7 +62,7 @@ export default class RoutePage extends React.Component<any, State> {
 
     renderRoute = (routeList) => {
         return (
-            <MyLayout menu={this.renderMenu(routeList)}>
+            <BaseLayout menu={this.renderMenu(routeList)}>
                 <Switch>
                     <Route
                         key={'root'}
@@ -71,7 +71,7 @@ export default class RoutePage extends React.Component<any, State> {
                     >
                         <LazyLoad component={'RootPage'}/>
                     </Route>
-
+                    {/*<Redirect from="/" to="/core" />*/}
                     {
                         routeList.map(value => {
                             return value.group.map(
@@ -107,7 +107,7 @@ export default class RoutePage extends React.Component<any, State> {
                         <LazyLoad component={'404'}/>
                     </Route>
                 </Switch>
-            </MyLayout>
+            </BaseLayout>
         )
     };
 
@@ -171,24 +171,13 @@ export default class RoutePage extends React.Component<any, State> {
 
     render() {
         return (
-            <div style={{
-                margin: '15px'
-            }}>
-                <div className={
-                    `${style["browser-mock-up"]}`
-                }
-                >
-                    <div className={style["browser-btn"]}/>
-                    <div id={"liuwentao"} className={style["browser-inner"]}
-                    >
-                        <Router basename={"/"}>
-                            {
-                                this.renderRoute(this.state.routeList)
-                            }
-                        </Router>
-                        <Planet/>
-                    </div>
-                </div>
+            <div>
+                <Router basename={env.BASE_URL}>
+                    {
+                        this.renderRoute(this.state.routeList)
+                    }
+                </Router>
+                <Planet/>
             </div>
         );
     }

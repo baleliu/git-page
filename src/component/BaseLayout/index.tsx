@@ -5,7 +5,8 @@ import {
 } from 'antd';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
-import RightLayout from '../RightLayout'
+// @ts-ignore
+import RightLayout from 'View/RightLayout'
 
 const {
     Header, Content, Footer, Sider,
@@ -28,7 +29,7 @@ type Props = {
     menu: any
 }
 
-class MyLayout extends React.Component<Props> {
+class BaseLayout extends React.Component<Props> {
     state = {
         collapsed: false,
         contentStyle: {marginRight: '300px'}
@@ -71,7 +72,7 @@ class MyLayout extends React.Component<Props> {
                 <Layout style={this.state.contentStyle}>
                     <Header style={{
                         background: '#fff',
-                        position: 'absolute',
+                        position: 'fixed',
                         width: '100%',
                         boxShadow: styleConstant.boxShadow,
                         height: '50px'
@@ -112,7 +113,7 @@ class MyLayout extends React.Component<Props> {
                     style={{
                         overflow: 'auto',
                         height: '100%',
-                        position: 'absolute',
+                        position: 'fixed',
                         right: 0,
                         boxShadow: styleConstant.boxShadow
                     }}
@@ -124,4 +125,4 @@ class MyLayout extends React.Component<Props> {
     }
 }
 
-export default MyLayout;
+export default BaseLayout;

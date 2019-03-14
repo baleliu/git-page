@@ -12,7 +12,7 @@ export default class RootPage extends React.Component{
                 reverse={true}
             >
                 <Timeline.Item dot={<Icon type="clock-circle-o" style={{ fontSize: '16px' }} />}>
-                    2010-03-01 也许是今天开始做的
+                    2019-03-01 也许是今天开始做的
                 </Timeline.Item>
                 <Timeline.Item color={'green'}>
                     <p>
@@ -24,10 +24,10 @@ export default class RootPage extends React.Component{
                     </p>
                 </Timeline.Item >
                 <Timeline.Item dot={<Icon type="clock-circle-o" style={{ fontSize: '16px' }}/> }>
-                    2010-03-09 完成基础框架
+                    2019-03-09 完成基础框架
                 </Timeline.Item>
                 <Timeline.Item color={'red'}>
-                    2010-03-09 BrowseRouter 设置失败(原因:GitPage静态页面)
+                    2019-03-09 BrowseRouter 设置失败(原因:GitPage静态页面)
                 </Timeline.Item>
             </Timeline>
         );

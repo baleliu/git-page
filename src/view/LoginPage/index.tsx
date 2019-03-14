@@ -33,6 +33,7 @@ export default class LoginPage extends React.Component<any, State> {
     };
 
     render() {
+        console.log(process.env.NODE_ENV)
         return (
             <div>
                 {
